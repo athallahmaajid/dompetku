@@ -49,7 +49,6 @@ class DompetController extends Controller
         foreach ($newModel as $key => $value){
             $newModel[$key]["action"] = ($value['action'] == 0) ? "Pengeluaran" : "Pemasukan";
             $newModel[$key]["description"] = ($value['description'] == "''") ? "" : $value['description'];
-            $newModel[$key]["amount"] = ($value['description'] == "''") ? "" : $value['description'];
         }
         print_r($provider->setModels($newModel));
         return $this->render("index", [
