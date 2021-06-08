@@ -58,9 +58,15 @@ class DompetController extends Controller
     public function actionCreate()
     {
         $model = new Dompet();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()){
+        $rawCurrentMoney = Yii::$app->db->createCommand('SELECT amount FROM dompet')->queryAll();
+        $currentMoney = 0;
+        foreach ($rawCurrentMoney as $key => $value) {
+            $currentMoney += (int)$value['amount'];
+        }
+        if ($model->load(Yii::$app->request->post()) && $model->validate() && (float)$model->amount < $currentMoney){
+            $model->description = Yii::$app->request->post('Dompet')['description'];
             $model->date = date('Y-m-d', strtotime(str_replace('.', '/', $model->date)));
-            $model->amount = str_replace('.', '', $model->amount);
+            $model->amount = (float)$model->amount;
             $model->save();
             $this->redirect("index");
         }

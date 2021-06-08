@@ -6,6 +6,7 @@ use app\models\Dompet;
 use yii\jui\DatePicker;
 use yii\helpers\Html;
 use janisto\timepicker\TimePicker;
+use kartik\money\MaskMoney;
 
 $model = new Dompet();
 ?>
@@ -27,7 +28,19 @@ $model = new Dompet();
 ]) ?>
     <?= $form->field($model, "description") ?>
     <?= $form->field($model, "action")->dropDownList($model->arrayAction()) ?>
-    <?= $form->field($model, "amount")->textInput(['type' => 'number']) ?>
+    <?= '<p>Amount</p>' ?>
 
+    <?= MaskMoney::widget([
+        'model' => $model,
+        'attribute' => 'amount',
+        'name' => 'amount',
+        'value' => 0,
+        'pluginOptions' => [
+            'prefix' => 'Rp.',
+            'thousands' => '.',
+            'decimal' => ','
+        ],
+    ]); ?>
+    <?= '<p></p>' ?>
     <?= Html::submitButton('Submit', ['class' => 'btn btn-primary']) ?>
 <?php ActiveForm::end(); ?>
